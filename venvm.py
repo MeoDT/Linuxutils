@@ -3,13 +3,13 @@ import os
 import sys
 import json
 import subprocess
-from pathlib import Path
 
-CONFIG_FILE = os.path.expanduser("~/.venvm_config.json")
+CONFIG_DIR = os.path.expanduser("~/.venvmanager")
+os.makedirs(CONFIG_DIR, exist_ok=True)
+CONFIG_FILE = os.path.join(CONFIG_DIR, "venvm_config.json")
 
 class VenvManager:
     def __init__(self):
-        # Erstelle config-Datei, falls nicht vorhanden
         if not os.path.exists(CONFIG_FILE):
             with open(CONFIG_FILE, 'w') as f:
                 json.dump({}, f)
