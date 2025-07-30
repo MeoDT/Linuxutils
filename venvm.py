@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import sys
 import json
@@ -8,14 +9,19 @@ CONFIG_FILE = os.path.expanduser("~/.venvm_config.json")
 
 class VenvManager:
     def __init__(self):
+        # Erstelle config-Datei, falls nicht vorhanden
+        if not os.path.exists(CONFIG_FILE):
+            with open(CONFIG_FILE, 'w') as f:
+                json.dump({}, f)
         self.venvs = self.load_config()
         self.cleanup_missing_venvs()
 
     def load_config(self):
-        if os.path.exists(CONFIG_FILE):
-            with open(CONFIG_FILE, 'r') as f:
+        with open(CONFIG_FILE, 'r') as f:
+            try:
                 return json.load(f)
-        return {}
+            except json.JSONDecodeError:
+                return {}
 
     def save_config(self):
         with open(CONFIG_FILE, 'w') as f:
@@ -38,19 +44,26 @@ class VenvManager:
 
     def create_venv(self, base_dir, name):
         full_path = os.path.join(base_dir, name)
-        os.makedirs(full_path, exist_ok=True)
-        subprocess.run(["python3", "-m", "venv", full_path])
         unique_name = self.generate_unique_name(name)
-        self.venvs[unique_name] = full_path
-        self.save_config()
-        print(f"[OK] Virtual environment '{unique_name}' created at {full_path}")
+        try:
+            subprocess.run([sys.executable, "-m", "venv", full_path], check=True)
+            self.venvs[unique_name] = os.path.abspath(full_path)
+            self.save_config()
+            print(f"[OK] Virtual environment '{unique_name}' created at {full_path}")
+        except subprocess.CalledProcessError:
+            print("[ERROR] Failed to create virtual environment.")
 
     def delete_venv(self, name):
         if name not in self.venvs:
             print("[ERROR] Venv not found.")
             return
         path = self.venvs[name]
-        subprocess.run(["rm", "-rf", path])
+        if os.path.exists(path):
+            try:
+                subprocess.run(["rm", "-rf", path], check=True)
+            except subprocess.CalledProcessError:
+                print("[ERROR] Failed to delete virtual environment directory.")
+                return
         del self.venvs[name]
         self.save_config()
         print(f"[OK] Deleted virtual environment '{name}'")
@@ -60,14 +73,21 @@ class VenvManager:
             print("[ERROR] Venv not found.")
             return
         pip_path = os.path.join(self.venvs[name], "bin", "pip")
-        subprocess.run([pip_path, "install", package])
+        try:
+            subprocess.run([pip_path, "install", package], check=True)
+            print(f"[OK] Package '{package}' installed in '{name}'")
+        except subprocess.CalledProcessError:
+            print("[ERROR] Package installation failed.")
 
     def run_pip_command(self, name, pip_args):
         if name not in self.venvs:
             print("[ERROR] Venv not found.")
             return
         pip_path = os.path.join(self.venvs[name], "bin", "pip")
-        subprocess.run([pip_path] + pip_args)
+        try:
+            subprocess.run([pip_path] + pip_args, check=True)
+        except subprocess.CalledProcessError:
+            print("[ERROR] pip command failed.")
 
     def list_help(self):
         print("""
