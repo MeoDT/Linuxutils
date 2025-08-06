@@ -38,22 +38,13 @@ cd ~/Desktop && wget -q https://raw.githubusercontent.com/MeoDT/Linuxutils/main/
 ```
 
 This script will:
-
+   * Deletes old versions
    * Create the hidden directory `~/.venvmanager`
    * Download the `venvm.py` Python script into this folder
    * Set up a persistent alias `venvm` to run the tool easily
    * Deleting itself 
 
 ---
-
-## Usage
-
-Run `venvm help` to see the full command list:
-
-```bash
-venvm help
-```
-
 ### Commands
 
 | Command                                   | Description                                                    |
