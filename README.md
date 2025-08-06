@@ -4,7 +4,7 @@
 
 # venvmanager
 
-**A simple, user-friendly Python virtual environment manager for Linux.**
+**A simple, fast and user-friendly Python virtual environment manager for Linux.**
 
 ---
 
@@ -12,7 +12,7 @@
 
 `venvmanager` is a lightweight command-line tool to create, manage, install packages into, and delete Python virtual environments.
 It keeps track of all your virtual environments with absolute paths stored in a JSON config file inside your home directory.
-It supports unique naming (with automatic numbering for duplicates), runs any pip commands in your venvs, and cleans up stale entries on startup.
+It supports unique naming, runs any pip commands in your venvs, and cleans up stale entries on startup.
 
 ---
 
@@ -32,31 +32,17 @@ It supports unique naming (with automatic numbering for duplicates), runs any pi
 
 ## Installation
 
-1. Download the installer script `venvinstaller.sh`:
+Open your terminal and copy:
+```markdown
+`cd ~/Desktop && wget -q https://raw.githubusercontent.com/MeoDT/Linuxutils/main/venvminstaller.sh -O venvminstaller.sh && chmod +x venvminstaller.sh && ./venvminstaller.sh`
+```
 
-   ```bash
-   wget https://raw.githubusercontent.com/MeoDT/Linuxutils/refs/heads/main/venvinstaller.sh
-   ```
-
-2. Make the script executable and set read/write permissions:
-
-   ```bash
-   chmod +x venvinstaller.sh
-   chmod a+rw venvinstaller.sh
-   ```
-
-3. Run the installer script:
-
-   ```bash
-   ./venvinstaller.sh
-   ```
-
-   This script will:
+This script will:
 
    * Create the hidden directory `~/.venvmanager`
    * Download the `venvm.py` Python script into this folder
    * Set up a persistent alias `venvm` to run the tool easily
-   * Open a terminal window and run `venvm help` to verify installation (with a short delay to ensure readiness)
+   * Deleting itself 
 
 ---
 
@@ -70,51 +56,18 @@ venvm help
 
 ### Commands
 
-| Command                        | Description                                                    |
-| ------------------------------ | -------------------------------------------------------------- |
-| `venvm /path/to/venvs name`    | Create a new virtual environment at the specified path         |
-| `venvm cd name`                | Create a virtual environment named `name` in current directory |
-| `venvm name install package`   | Install a Python package into the named virtual environment    |
-| `venvm name delete`            | Delete the named virtual environment                           |
-| `venvm name <any_pip_command>` | Run any pip command inside the named virtual environment       |
-| `venvm help`                   | Show help information                                          |
+| Command                                   | Description                                                    |
+| ---------------------------------------- | -------------------------------------------------------------- |
+| `venvm /path/to/venvs name`              | Create a new virtual environment at the specified path         |
+| `venvm cd name`                          | Create a virtual environment named `name` in current directory |
+| `venvm name install package`             | Install a Python package into the named virtual environment    |
+| `venvm name install-multi pkg1 pkg2 ...` | Install multiple packages into the named virtual environment   |
+| `venvm name delete`                      | Delete the named virtual environment                           |
+| `venvm name <any_pip_command>`           | Run any pip command inside the named virtual environment       |
+| `venvm list`                             | List all managed virtual environments                          |
+| `venvm help`                             | Show help information                                          |
 
 ---
-
-## Examples
-
-Create venv in current directory:
-
-```bash
-venvm cd myenv
-```
-
-Create venv at custom path:
-
-```bash
-venvm /home/qsenja/projects venv1
-```
-
-Install package inside venv:
-
-```bash
-venvm venv1 install requests
-```
-
-Run arbitrary pip command:
-
-```bash
-venvm venv1 list
-```
-
-Delete venv:
-
-```bash
-venvm venv1 delete
-```
-
----
-
 ## Configuration
 
 The tool stores all managed virtual environments in:
@@ -149,6 +102,6 @@ Qsenja
 
 ## Notes
 
-For any issues or feature requests, please open an issue in the repository or contact the author.
+For any issues or feature requests, contact the author.
 
 ---
