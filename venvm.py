@@ -9,7 +9,7 @@ import platform
 import shutil
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# Linux-only check
+
 if platform.system() != "Linux":
     print("✗ This program is designed for Linux only")
     sys.exit(1)
@@ -53,7 +53,7 @@ class VenvManager:
         self.max_workers = multiprocessing.cpu_count() * 2
         self.executor = ThreadPoolExecutor(max_workers=self.max_workers)
         
-        # Ensure cache dir exists
+
         os.makedirs(os.path.expanduser("~/.cache/pip"), exist_ok=True)
         
         if not os.path.exists(CONFIG_FILE):
@@ -114,12 +114,10 @@ class VenvManager:
         env = self._get_fast_env()
         
         try:
-            # Create venv
             result = self._silent_run([sys.executable, "-m", "venv", "--without-pip", "--clear", full_path], env)
             if result.returncode != 0:
                 return {"success": False, "error": "venv creation failed"}
             
-            # Install pip
             pip_result = self._silent_run([os.path.join(full_path, "bin", "python"), 
                                          "-m", "ensurepip", "--upgrade", "--default-pip"], env)
             
@@ -166,7 +164,6 @@ class VenvManager:
     def create_venv(self, base_dir, name):
         full_path = os.path.join(base_dir, name)
         
-        # Quick check if directory already exists
         if os.path.exists(full_path):
             print(f"✗ Directory '{name}' already exists at {full_path}")
             return
@@ -207,7 +204,6 @@ class VenvManager:
             print("✗ Venv not found")
             return
         
-        # Quick check if venv still exists
         venv_path = self.venvs[name]
         if not os.path.exists(venv_path):
             print(f"✗ Venv '{name}' directory missing")
@@ -231,7 +227,6 @@ class VenvManager:
             print("✗ Venv not found")
             return
         
-        # Quick check if venv still exists
         venv_path = self.venvs[name]
         if not os.path.exists(venv_path):
             print(f"✗ Venv '{name}' directory missing")
@@ -241,7 +236,6 @@ class VenvManager:
         spinner = Spinner(f"Installing {len(packages)} packages")
         spinner.start()
         
-        # Try batch install first
         batch_future = self.executor.submit(self._batch_install_task, pip_path, packages)
         batch_success = batch_future.result()
         
@@ -250,7 +244,7 @@ class VenvManager:
             print(f"✓ Installed all {len(packages)} packages")
             return
         
-        # Fall back to individual installs
+
         futures = [self.executor.submit(self._install_package_task, pip_path, pkg) for pkg in packages]
         results = [f.result() for f in futures]
         
@@ -269,7 +263,6 @@ class VenvManager:
             print("✗ Venv not found")
             return
         
-        # Quick check if venv still exists
         venv_path = self.venvs[name]
         if not os.path.exists(venv_path):
             print(f"✗ Venv '{name}' directory missing")
@@ -309,7 +302,7 @@ class VenvManager:
             print(f"  {status} {name:<15} {size:<8} {path}")
 
     def show_help(self):
-        print(f"""venvm - Linux venv manager ({self.max_workers} threads)
+        print(f"""venvm - Linux venv manager by MeoDT using ({self.max_workers} threads)
 
 Usage:
   venvm /path/to/dir <name>     Create venv at path
@@ -319,9 +312,8 @@ Usage:
   venvm <name> delete           Delete venv
   venvm <name> <pip_args>       Run pip command
   venvm list                    List all venvs
-  venvm help                    Show this help
+  venvm help                    Show this helpmessager
 
-Config: {CONFIG_DIR}
 """)
 
     def cleanup(self):
