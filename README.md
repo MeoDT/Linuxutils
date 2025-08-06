@@ -1,4 +1,4 @@
-Hier die vollständige README inklusive Installation mit dem Shell-Skript und allem, als Markdown:
+
 
 ---
 
