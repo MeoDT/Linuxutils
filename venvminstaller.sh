@@ -11,4 +11,5 @@ mkdir -p "$D"
 m(){ p=$!; s="/-\|"; i=0; while kill -0 "$p" 2>/dev/null; do printf "\rInstalling %c" "${s:i++%4:1}"; sleep 0.1; done; printf "\r"; }
 ( curl -sSLo "$P" "https://raw.githubusercontent.com/MeoDT/Linuxutils/refs/heads/main/venvm.py" && chmod +x "$P" && touch "$F" ) & m
 grep -Fxq "$A" "$RC" 2>/dev/null || echo "$A" >> "$RC"
-echo "Done. Run 'source $RC' or reopen terminal."
+source "$RC"
+echo "Done."
