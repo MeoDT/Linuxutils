@@ -32,7 +32,8 @@ It supports unique naming, runs any pip commands in your venvs, and cleans up st
 
 ## Installation
 
-(Ubuntu based) Open your terminal and copy:
+ Open your terminal and copy:
+(Ubuntu based)
 ```markdown
 cd ~/Desktop && wget -q https://raw.githubusercontent.com/MeoDT/Linuxutils/main/venvminstaller.sh -O venvminstaller.sh && chmod +x venvminstaller.sh && ./venvminstaller.sh
 ```
