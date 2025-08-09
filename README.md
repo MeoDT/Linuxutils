@@ -32,11 +32,14 @@ It supports unique naming, runs any pip commands in your venvs, and cleans up st
 
 ## Installation
 
-Open your terminal and copy:
+(Ubuntu based) Open your terminal and copy:
 ```markdown
 cd ~/Desktop && wget -q https://raw.githubusercontent.com/MeoDT/Linuxutils/main/venvminstaller.sh -O venvminstaller.sh && chmod +x venvminstaller.sh && ./venvminstaller.sh
 ```
-
+(Arch based)
+```markdown
+cd ~/Desktop && sudo pacman -S --needed --noconfirm python python-pip curl && wget -q https://raw.githubusercontent.com/MeoDT/Linuxutils/main/venvminstaller.sh -O venvminstaller.sh && chmod +x venvminstaller.sh && ./venvminstaller.sh
+```
 This script will:
    * Deletes old versions
    * Create the hidden directory `~/.venvmanager`
